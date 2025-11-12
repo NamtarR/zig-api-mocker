@@ -1,14 +1,16 @@
 const std = @import("std");
+const Method = @import("method.zig").Method;
 
 pub const Route = struct {
+    method: Method,
     path: []const u8,
     status: u16 = 200,
     response: []const u8,
 };
 
-pub fn findRoute(routes: []const Route, path: []const u8) ?Route {
+pub fn findRoute(routes: []const Route, path: []const u8, method: Method) ?Route {
     for (routes) |route| {
-        if (std.mem.eql(u8, route.path, path)) {
+        if (std.mem.eql(u8, route.path, path) and route.method == method) {
             return route;
         }
     }
