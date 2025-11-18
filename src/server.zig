@@ -4,6 +4,7 @@ const Config = @import("config.zig").Config;
 const Route = @import("route.zig").Route;
 const findRoute = @import("route.zig").findRoute;
 const stringToMethod = @import("method.zig").stringToMethod;
+const VERSION = @import("version.zig").VERSION;
 
 pub const Context = struct {
     config: *const Config,
@@ -39,6 +40,22 @@ fn handleRequest(context: Context, req: *httpz.Request, res: *httpz.Response) !v
         res.header(header.key, header.value);
     }
 
+    try addStaticHeaders(&context, res);
+
     res.status = route.status;
     res.body = route.response;
+}
+
+fn addStaticHeaders(context: *const Context, res: *httpz.Response) !void {
+    const date = try std.fmt.allocPrint(context.allocator, "{d}", .{std.time.timestamp()});
+    const server = try std.fmt.allocPrint(context.allocator, "zig-api-mocker/{s}", .{VERSION});
+
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Header", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+    res.header("Content-Type", "application/json");
+    res.header("Date", date);
+    res.header("Server", server);
+
+    //Content-Length is added automatically when setting the response data
 }

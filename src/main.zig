@@ -18,12 +18,6 @@ pub fn main() !void {
             try startServer(allocator, &argsResult.config);
         },
     }
-
-    // for (config.routes) |route| {
-    //     std.debug.print("Route {s} will respond with {d} and {s}\n", .{ route.path, route.status, route.response });
-    // }
-
-    // std.debug.print("The server will listen on {d}\n", .{config.port});
 }
 
 fn startServer(allocator: std.mem.Allocator, config: *const Config) !void {

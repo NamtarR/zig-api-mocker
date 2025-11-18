@@ -45,6 +45,12 @@ pub fn build(b: *std.Build) void {
 
     exe_module.addImport("httpz", httpz.module("httpz"));
 
+    const git_describe = b.run(&[_][]const u8{ "git", "describe", "--tags", "--always", "--dirty" });
+
+    const options = b.addOptions();
+    options.addOption([]const u8, "version", git_describe);
+    exe_module.addOptions("build_options", options);
+
     // Here we define an executable. An executable needs to have a root module
     // which needs to expose a `main` function. While we could add a main function
     // to the module defined above, it's sometimes preferable to split business

@@ -26,7 +26,8 @@ zig-api-mocker --config conf.json
 ## Tasks
 
 - ~~Select correct HTTP method from `Route`~~
-- Use mandatory headers and global headers from `Config`
+- ~~Add global headers from `Config`~~
+- ~~Add static headers~~
 - Log incoming HTTP requests
 - Allow using JSON files via `@filename.json` for responses
 - Handle `Route` variables
