@@ -14,14 +14,11 @@ pub fn main() !void {
     switch (argsResult) {
         .help => {},
         .config => {
-            std.debug.print("Config {d}\n", .{argsResult.config.port});
             try startServer(allocator, &argsResult.config);
         },
     }
 }
 
 fn startServer(allocator: std.mem.Allocator, config: *const Config) !void {
-    const server = try server_module.initWithConfig(allocator, config);
-
-    _ = server;
+    _ = try server_module.initWithConfig(allocator, config);
 }

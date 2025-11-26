@@ -58,9 +58,6 @@ pub fn parseArgs(allocator: std.mem.Allocator) !ArgsResult {
         }
     }
 
-    std.debug.print("routes {d}\n", .{routes.items.len});
-    std.debug.print("headers {d}\n", .{headers.items.len});
-
     const config = Config{
         .port = port,
         .routes = try routes.toOwnedSlice(allocator),
