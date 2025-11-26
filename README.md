@@ -32,6 +32,6 @@ zig-api-mocker --config conf.json
 - ~~Allow using JSON files via `@filename.json` for responses~~
 - ~~Show help on `--help` command~~
 - ~~Show version on `--version` command~~
-- Load the whole config from file
 - Correctly handle CLI errors
+- Load the whole config from file
 - Handle `Route` variables

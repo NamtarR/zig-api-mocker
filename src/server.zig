@@ -4,7 +4,6 @@ const Config = @import("config.zig").Config;
 const Route = @import("route.zig").Route;
 const findRoute = @import("route.zig").findRoute;
 const stringToMethod = @import("method.zig").stringToMethod;
-const VERSION = @import("version.zig").VERSION;
 const strings = @import("strings.zig");
 
 pub const Context = struct {
@@ -101,7 +100,7 @@ fn handleRequest(context: *Context, req: *httpz.Request, res: *httpz.Response) !
 
 fn addStaticHeaders(context: *Context, res: *httpz.Response) !void {
     const date = try std.fmt.allocPrint(context.allocator, "{d}", .{std.time.timestamp()});
-    const server = try std.fmt.allocPrint(context.allocator, strings.SERVER, .{VERSION});
+    const server = try std.fmt.allocPrint(context.allocator, strings.SERVER, .{strings.VERSION});
 
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Header", "*");

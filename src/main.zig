@@ -4,7 +4,6 @@ const config_module = @import("config.zig");
 const Config = config_module.Config;
 const server_module = @import("server.zig");
 const parseArgs = @import("args.zig").parseArgs;
-const VERSION = @import("version.zig").VERSION;
 const strings = @import("strings.zig");
 
 pub fn main() !void {
@@ -31,11 +30,11 @@ fn startServer(allocator: std.mem.Allocator, config: *const Config) !void {
 }
 
 fn printHelp(allocator: std.mem.Allocator) !void {
-    const help = try std.fmt.allocPrint(allocator, strings.CLI_HELP, .{VERSION});
+    const help = try std.fmt.allocPrint(allocator, strings.CLI_HELP, .{strings.VERSION});
     _ = try std.fs.File.stdout().write(help);
 }
 
 fn printVersion(allocator: std.mem.Allocator) !void {
-    const help = try std.fmt.allocPrint(allocator, strings.CLI_VERSION, .{VERSION});
+    const help = try std.fmt.allocPrint(allocator, strings.CLI_VERSION, .{strings.VERSION});
     _ = try std.fs.File.stdout().write(help);
 }

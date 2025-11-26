@@ -1,7 +1,14 @@
-pub const LOG_CONFIG = "Listening on port {d} with {d} registered routes and {d} headers\n\n";
-pub const LOG_REQUEST = "[{s}] {f} {s} {s} -> {d} ({d}ms)\n";
+const std = @import("std");
+const options = @import("build_options");
+
+pub const VERSION = std.mem.trim(u8, options.version, "\n\r");
+
 pub const TIME = "{d:0>2}:{d:0>2}:{d:0>2}";
 pub const SERVER = "zig-api-mocker/{s}";
+
+pub const LOG_CONFIG = "Listening on port {d} with {d} registered routes and {d} headers\n\n";
+pub const LOG_REQUEST = "[{s}] {f} {s} {s} -> {d} ({d}ms)\n";
+
 pub const CLI_HELP =
     \\zig-api-mocker/{s}
     \\Simple mock API server for development.
