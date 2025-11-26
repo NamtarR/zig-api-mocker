@@ -91,8 +91,12 @@ fn handleRequest(context: *Context, req: *httpz.Request, res: *httpz.Response) !
 
     try addStaticHeaders(context, res);
 
+    switch (route.response) {
+        .static => res.body = route.response.static,
+        .file => res.body = try readResponseFile(context, route.response.file),
+    }
+
     res.status = route.status;
-    res.body = route.response;
 }
 
 fn addStaticHeaders(context: *Context, res: *httpz.Response) !void {
@@ -107,4 +111,8 @@ fn addStaticHeaders(context: *Context, res: *httpz.Response) !void {
     res.header("Server", server);
 
     //Content-Length is added automatically when setting the response data
+}
+
+fn readResponseFile(context: *Context, file: []const u8) ![]const u8 {
+    return try std.fs.cwd().readFileAlloc(context.allocator, file, 4096);
 }

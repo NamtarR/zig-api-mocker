@@ -29,8 +29,8 @@ zig-api-mocker --config conf.json
 - ~~Add global headers from `Config`~~
 - ~~Add static headers~~
 - ~~Log incoming HTTP requests~~
-- Allow using JSON files via `@filename.json` for responses
-- Handle `Route` variables
-- Correctly handle CLI errors
+- ~~Allow using JSON files via `@filename.json` for responses~~
 - Show help on `--help` command
 - Load the whole config from file
+- Correctly handle CLI errors
+- Handle `Route` variables

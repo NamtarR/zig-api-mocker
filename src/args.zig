@@ -2,10 +2,12 @@ const std = @import("std");
 const Config = @import("config.zig").Config;
 const Header = @import("header.zig").Header;
 const Route = @import("route.zig").Route;
+const Response = @import("route.zig").Response;
 const Method = @import("method.zig").Method;
 const stringToMethod = @import("method.zig").stringToMethod;
 
 const arg_help = "--help";
+const arg_version = "--version";
 const arg_port = "--port";
 const arg_route = "--route";
 const arg_header = "--global-header";
@@ -14,6 +16,7 @@ const port_default: u16 = 9876;
 
 const ArgsResult = union(enum) {
     help,
+    version,
     config: Config,
 };
 
@@ -37,6 +40,8 @@ pub fn parseArgs(allocator: std.mem.Allocator) !ArgsResult {
     while (args.next()) |arg| {
         if (std.mem.eql(u8, arg, arg_help)) {
             return .help;
+        } else if (std.mem.eql(u8, arg, arg_version)) {
+            return .version;
         } else if (std.mem.eql(u8, arg, arg_port)) {
             const port_string = args.next() orelse return error.PortError;
 
@@ -76,7 +81,15 @@ fn parseRoute(
     const method = try stringToMethod(allocator, method_string);
     const delimeter_index = std.mem.indexOf(u8, response_string, ":") orelse return error.RouteError;
     const status_code = try std.fmt.parseInt(u16, response_string[0..delimeter_index], 10);
-    const response = response_string[delimeter_index + 1 ..];
+    const response_data = response_string[delimeter_index + 1 ..];
+
+    const response = if (response_data[0] == '@') blk: {
+        const filename = response_data[1..];
+
+        std.fs.cwd().access(filename, .{}) catch return error.RouteError;
+
+        break :blk Response{ .file = response_data[1..] };
+    } else Response{ .static = response_data };
 
     return Route{
         .method = method,
